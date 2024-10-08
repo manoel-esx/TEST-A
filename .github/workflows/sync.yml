@@ -1,4 +1,4 @@
-name: Sync jobs folder to TESTE-B
+name: Sync jobs folder to Azure DevOps
 
 on:
   push:
@@ -15,16 +15,22 @@ jobs:
       with:
         ref: main
 
-    - name: Clone TESTE-B repository
+    - name: Sync jobs folder to Azure DevOps
       run: |
-        git clone https://x-access-token:${{ secrets.REPO_B_PAT }}@github.com/manoel-esx/TEST-B.git repo-b
-
-    - name: Sync jobs folder from TESTE-A to TESTE-B
-      run: |
-        rsync -av --delete jobs/ repo-b/jobs/
-        cd repo-b
+        # Clone the Azure DevOps repository
+        git clone https://$(AZURE_PAT):@dev.azure.com/esx/Portal%20ESX%20Premium/_git/teste-apagar repo-azure
+        
+        # Copy files to the Azure DevOps repo
+        rsync -av --delete jobs/ repo-azure/jobs/
+        
+        # Configure Git for Azure DevOps
+        cd repo-azure
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
+        
+        # Commit and push changes
         git add jobs/*
-        git commit -m "Sync jobs folder from TESTE-A"
+        git commit -m "Sync jobs folder to Azure DevOps"
         git push origin main
+      env:
+        AAZURE_PAT: ${{ secrets.AZURE_PAT }}
