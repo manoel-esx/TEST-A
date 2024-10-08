@@ -20,6 +20,9 @@ jobs:
         # Clone the Azure DevOps repository
         git clone https://${{ secrets.AZURE_PAT }}:@dev.azure.com/esx/Portal%20ESX%20Premium/_git/teste-apagar repo-azure
         
+        # Create the required directories in Azure DevOps repo if they don't exist
+        mkdir -p repo-azure/collections/jobs
+        
         # Copy files to the Azure DevOps repo
         rsync -av --delete collections/jobs/ repo-azure/collections/jobs/
         
@@ -30,5 +33,5 @@ jobs:
         
         # Commit and push changes
         git add collections/jobs/*
-        git commit -m "Sync jobs folder to Azure DevOps"
+        git commit -m "Sync jobs folder to Azure DevOps" || echo "No changes to commit"
         git push origin main
