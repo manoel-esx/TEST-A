@@ -17,7 +17,7 @@ jobs:
 
     - name: Clone TESTE-B repository
       run: |
-        git clone https://x-access-token:${{ secrets.REPO_B_PAT }}@github.com/manoel-esx/TESTE-B.git repo-b
+        git clone https://x-access-token:${{ secrets.REPO_B_PAT }}@github.com/manoel-esx/TEST-B.git repo-b
 
     - name: Sync jobs folder from TESTE-A to TESTE-B
       run: |
