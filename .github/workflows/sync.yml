@@ -3,7 +3,7 @@ name: Sync jobs folder to TESTE-B
 on:
   push:
     paths:
-      - 'jobs/**'
+      - 'jobs/**' # Aciona apenas quando houver alterações na pasta 'jobs'
 
 jobs:
   sync_jobs:
@@ -13,18 +13,23 @@ jobs:
     - name: Checkout TESTE-A repository
       uses: actions/checkout@v3
       with:
-        ref: main
+        ref: main # Altere para a branch principal do repositório A (pode ser 'main' ou 'master')
 
     - name: Clone TESTE-B repository
-      run: |
-        git clone https://x-access-token:${{ secrets.REPO_B_PAT }}@github.com/manoel-esx/TEST-B.git repo-b
+      uses: actions/checkout@v3
+      with:
+        repository: manoel-esx/TEST-B
+        token: ${{ secrets.REPO_B_PAT }} # Usa o token secreto do repositório B
+        path: repo-b # Clona o repositório B em uma pasta chamada 'repo-b'
 
     - name: Sync jobs folder from TESTE-A to TESTE-B
       run: |
+        # Copiar a pasta 'jobs' do TESTE-A para o TESTE-B
         rsync -av --delete jobs/ repo-b/jobs/
         cd repo-b
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
         git add jobs/*
         git commit -m "Sync jobs folder from TESTE-A"
-        git push origin main
+        git push origin main # Altere para a branch principal do repositório B, se necessário
+
