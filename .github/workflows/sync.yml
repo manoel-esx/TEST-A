@@ -16,11 +16,8 @@ jobs:
         ref: main
 
     - name: Clone TESTE-B repository
-      uses: actions/checkout@v3
-      with:
-        repository: manoel-esx/TESTE-B
-        token: ${{ secrets.REPO_B_PAT }} 
-        path: repo-b 
+      run: |
+        git clone https://x-access-token:${{ secrets.REPO_B_PAT }}@github.com/manoel-esx/TESTE-B.git repo-b
 
     - name: Sync jobs folder from TESTE-A to TESTE-B
       run: |
@@ -31,4 +28,3 @@ jobs:
         git add jobs/*
         git commit -m "Sync jobs folder from TESTE-A"
         git push origin main
-
