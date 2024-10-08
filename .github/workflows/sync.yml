@@ -18,7 +18,7 @@ jobs:
     - name: Clone TESTE-B repository
       uses: actions/checkout@v3
       with:
-        repository: SEU_USUARIO/TESTE-B
+        repository: manoel-esx/TESTE-B
         token: ${{ secrets.REPO_B_PAT }} 
         path: repo-b 
 
