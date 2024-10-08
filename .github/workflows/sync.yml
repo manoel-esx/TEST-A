@@ -1,0 +1,34 @@
+name: Sync jobs folder to TESTE-B
+
+on:
+  push:
+    paths:
+      - 'jobs/**'
+
+jobs:
+  sync_jobs:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout TESTE-A repository
+      uses: actions/checkout@v3
+      with:
+        ref: main
+
+    - name: Clone TESTE-B repository
+      uses: actions/checkout@v3
+      with:
+        repository: SEU_USUARIO/TESTE-B
+        token: ${{ secrets.REPO_B_PAT }} 
+        path: repo-b 
+
+    - name: Sync jobs folder from TESTE-A to TESTE-B
+      run: |
+        rsync -av --delete jobs/ repo-b/jobs/
+        cd repo-b
+        git config user.name "GitHub Actions"
+        git config user.email "actions@github.com"
+        git add jobs/*
+        git commit -m "Sync jobs folder from TESTE-A"
+        git push origin main
+
