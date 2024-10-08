@@ -3,7 +3,7 @@ name: Sync jobs folder to Azure DevOps
 on:
   push:
     paths:
-      - 'jobs/**'
+      - '/collections/jobs/**'
 
 jobs:
   sync_jobs:
