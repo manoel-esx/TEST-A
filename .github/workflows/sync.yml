@@ -21,7 +21,6 @@ jobs:
         git clone https://${{ secrets.AZURE_PAT }}:@dev.azure.com/esx/Portal%20ESX%20Premium/_git/teste-apagar repo-azure
         
         # Copy files to the Azure DevOps repo
-        rsync -av --delete /jobs/ repo-azure/jobs/
         rsync -av --delete /collections/jobs/ repo-azure/collections/jobs/
         
         # Configure Git for Azure DevOps
