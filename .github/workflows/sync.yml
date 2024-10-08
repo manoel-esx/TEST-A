@@ -23,7 +23,7 @@ jobs:
         path: repo-b 
 
     - name: Sync jobs folder from TESTE-A to TESTE-B
-      run: |
+      run:
         rsync -av --delete jobs/ repo-b/jobs/
         cd repo-b
         git config user.name "GitHub Actions"
