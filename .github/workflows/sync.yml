@@ -1,4 +1,4 @@
-name: Sync jobs folder to Azure DevOps
+name: Sincronia collection/jobs ESX para Squad Premium
 
 on:
   push:
@@ -10,28 +10,28 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout TESTE-A repository
+    - name: Checkout repositório ESX
       uses: actions/checkout@v3
       with:
         ref: main
 
-    - name: Sync jobs folder to Azure DevOps
+    - name: Sincronia collection/jobs ESX para Squad Premium
       run: |
-        # Clone the Azure DevOps repository
-        git clone https://${{ secrets.AZURE_PAT }}:@dev.azure.com/esx/Portal%20ESX%20Premium/_git/teste-apagar repo-azure
+        # [Passo 1] - Clonar o repositório da da Squad Premium na Azure
+        git clone https://${{ secrets.AZURE_PAT }}:@dev.azure.com/esx/Portal%20ESX%20Premium/_git/site repo-azure
         
-        # Create the required directories in Azure DevOps repo if they don't exist
+        # [Passo 2] - Cria a pasta necessária caso ela ainda não exista
         mkdir -p repo-azure/collections/jobs
         
-        # Copy files to the Azure DevOps repo
+        # [Passo 3] - Copia os arquivos para o repositório da Squad Premium
         rsync -av --delete collections/jobs/ repo-azure/collections/jobs/
         
-        # Configure Git for Azure DevOps
+        # [Passo 4] - Configuração do Git para Azure DevOps
         cd repo-azure
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
         
-        # Commit and push changes
+        # [Passo 4] - Commit e push das alterações
         git add collections/jobs/*
         git commit -m "Sync jobs folder to Azure DevOps" || echo "No changes to commit"
         git push origin main
