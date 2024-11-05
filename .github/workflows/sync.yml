@@ -17,13 +17,23 @@ jobs:
 
     - name: Clone TESTE-B repository
       run: |
+        # [Passo 1] - Clonar o repositório B
         git clone https://x-access-token:${{ secrets.REPO_B_PAT }}@github.com/manoel-esx/TEST-B.git repo-b
     - name: Sync jobs folder from TESTE-A to TESTE-B
       run: |
+      
+        # [Passo 2] - Copia os arquivos para o repositório da Squad Premium
         rsync -av --delete jobs/ repo-b/jobs/
+        
+        # [Passo 3] - Configuração do Git para Azure DevOps
         cd repo-b
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
+        
+        # [Passo 4] - Sincronizar as alterações mais recentes do remoto antes do push
+        git pull --rebase origin main
+    
+        # [Passo 6] - Commit e push das alterações
         git add jobs/*
         git commit -m "Sync jobs folder from TESTE-A"
         git push origin main
