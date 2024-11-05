@@ -3,7 +3,7 @@ name: Sync jobs folder to TESTE-B
 on:
   push:
     paths:
-      - '/collections/jobs/**'
+      - 'collections/jobs/**'
 
 jobs:
   sync_jobs:
@@ -19,12 +19,13 @@ jobs:
       run: |
         # [Passo 1] - Clonar o repositório B
         git clone https://x-access-token:${{ secrets.REPO_B_PAT }}@github.com/manoel-esx/TEST-B.git repo-b
+
     - name: Sync jobs folder from TESTE-A to TESTE-B
       run: |
-        # [Passo 2] - Copia os arquivos para o repositório da Squad Premium
-        rsync -av --delete jobs/ repo-b/jobs/
+        # [Passo 2] - Copia os arquivos para o repositório B
+        rsync -av --delete collections/jobs/ repo-b/collections/jobs/
         
-        # [Passo 3] - Configuração do Git para Azure DevOps
+        # [Passo 3] - Configuração do Git
         cd repo-b
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
@@ -32,7 +33,7 @@ jobs:
         # [Passo 4] - Sincronizar as alterações mais recentes do remoto antes do push
         git pull --rebase origin main
     
-        # [Passo 6] - Commit e push das alterações
-        git add jobs/*
-        git commit -m "Sync jobs folder from TESTE-A"
+        # [Passo 5] - Commit e push das alterações
+        git add collections/jobs/*
+        git commit -m "Sync jobs folder from TESTE-A" || echo "Nenhuma mudança para commitar"
         git push origin main
