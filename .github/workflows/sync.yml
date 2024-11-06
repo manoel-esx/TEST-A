@@ -22,7 +22,10 @@ jobs:
 
     - name: Sync jobs folder from TESTE-A to TESTE-B
       run: |
-        # [Passo 2] - Copia os arquivos para o repositório B
+        # [Passo 2] - Cria a pasta caso precisar
+        mkdir -p repo-azure/collections/jobs
+        
+        # [Passo 3] - Copia os arquivos para o repositório B
         rsync -av --delete collections/jobs/ repo-b/collections/jobs/
         
         # [Passo 3] - Configuração do Git
