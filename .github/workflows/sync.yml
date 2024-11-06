@@ -34,7 +34,9 @@ jobs:
         git config user.email "actions@github.com"
         
         # [Passo 4] - Sincronizar as alterações mais recentes do remoto antes do push
-        git pull origin main
+        git stash
+        git pull --rebase origin main
+        git stash pop
     
         # [Passo 5] - Commit e push das alterações
         git add collections/jobs/*
