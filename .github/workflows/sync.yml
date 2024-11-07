@@ -2,8 +2,6 @@ name: Sync jobs folder to TESTE-B
 
 on:
   push:
-    branches: 
-      - main
     paths:
       - 'collections/jobs/**'
 
