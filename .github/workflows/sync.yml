@@ -12,6 +12,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Verificar se estamos na branch main
+      if: github.ref != 'refs/heads/main'
+      run: |
+        echo "Este workflow só deve rodar a partir da branch main. Encerrando."
+        exit 1  # Encerra a execução se não estiver na main
+        
     - name: Checkout TESTE-A repository
       uses: actions/checkout@v3
       with:
