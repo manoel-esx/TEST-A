@@ -12,36 +12,31 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Verificar se estamos na branch main
-      if: github.ref != 'refs/heads/main'
-      run: |
-        echo "Este workflow só deve rodar a partir da branch main. Encerrando."
-        exit 1  # Encerra a execução se não estiver na main
-        
     - name: Checkout TESTE-A repository
       uses: actions/checkout@v3
       with:
         ref: main
 
-    - name: Clone TESTE-B repository
+    - name: [Passo 1] - Clonar o repositório B
       run: |
-        # [Passo 1] - Clonar o repositório B
         git clone https://x-access-token:${{ secrets.REPO_B_PAT }}@github.com/manoel-esx/TEST-B.git repo-b
 
-    - name: Sync jobs folder from TESTE-A to TESTE-B
+    - name: [Passo 2] - Cria a pasta caso precisar
       run: |
-        # [Passo 2] - Cria a pasta caso precisar
         mkdir -p repo-b/collections/jobs
         
-        # [Passo 3] - Copia os arquivos para o repositório B
+    - name: [Passo 3] - Copia os arquivos para o repositório B
+      run: |
         rsync -av --delete collections/jobs/ repo-b/collections/jobs/
         
-        # [Passo 3] - Configuração do Git
+    - name: [Passo 4] - Configuração do Git
+      run: |
         cd repo-b
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
         
-        # [Passo 4] - Guardar mudanças se houver e sincronizar
+    - name: [Passo 5] - Guardar mudanças se houver e sincronizar
+      run: |
         if git diff --quiet; then
           echo "No local changes to stash"
         else
@@ -50,12 +45,14 @@ jobs:
         fi
         git pull --rebase origin main
         
-        # [Passo 5] - Restaurar mudanças se necessário
+    - name: [Passo 6] - Restaurar mudanças se necessário
+      run: |
         if [ "${STASH_APPLIED}" = true ]; then
           git stash pop
         fi
     
-        # [Passo 6] - Commit e push das alterações
+    - name: [Passo 7] - Commit e push das alterações
+      run: |
         git add -A collections/jobs/*
         git commit -m "Sync jobs folder from TESTE-A" || echo "Nenhuma mudança para commitar"
         git push origin main
