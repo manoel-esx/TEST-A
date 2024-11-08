@@ -38,6 +38,7 @@ jobs:
 
     - name: Commit e push das alterações
       run: |
+        cd repo-b
         git add .
         git commit -m "Sync entire jobs folder from TESTE-A" || echo "Nenhuma mudança para commitar"
-        git push https://x-access-token:${{ secrets.REPO_B }}@github.com/manoel-esx/TEST-B.git main
+        git push origin main
