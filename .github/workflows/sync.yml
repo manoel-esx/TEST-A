@@ -56,6 +56,6 @@ jobs:
         fi
     
         # [Passo 6] - Commit e push das alterações
-        git add collections/jobs/*
+        git add -A collections/jobs/*
         git commit -m "Sync jobs folder from TESTE-A" || echo "Nenhuma mudança para commitar"
         git push origin main
