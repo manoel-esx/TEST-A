@@ -32,11 +32,12 @@ jobs:
     - name: Passo 4 - Configuração do Git
       run: |
         cd repo-b
-        git config --global user.name "GitHub Actions"
-        git config --global user.email "actions@github.com"
+        git config user.name "GitHub Actions"
+        git config user.email "actions@github.com"
         
     - name: Passo 5 - Guardar mudanças se houver e sincronizar
       run: |
+        cd repo-b
         if git diff --quiet; then
           echo "No local changes to stash"
         else
@@ -47,12 +48,14 @@ jobs:
         
     - name: Passo 6 - Restaurar mudanças se necessário
       run: |
+        cd repo-b
         if [ "${STASH_APPLIED}" = true ]; then
           git stash pop
         fi
     
     - name: Passo 7 - Commit e push das alterações
       run: |
-        git add -all collections/jobs/*
+        cd repo-b
+        git add -A collections/jobs/*
         git commit -m "Sync jobs folder from TESTE-A" || echo "Nenhuma mudança para commitar"
-        git push origin main
+        git push https://x-access-token:${{ secrets.REPO_B_PAT }}@github.com/manoel-esx/TEST-B.git main
