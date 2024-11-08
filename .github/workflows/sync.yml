@@ -17,28 +17,28 @@ jobs:
       with:
         ref: main
 
-    - name: Passo 1 - Clonar o repositório B
+    - name: Clonar o repositório B
       run: |
         git clone https://x-access-token:${{ secrets.REPO_B_PAT }}@github.com/manoel-esx/TEST-B.git repo-b
 
-    - name: Passo 2 - Excluir a pasta collections/jobs no repositório B
+    - name: Excluir a pasta collections/jobs no repositório B
       run: |
         rm -rf repo-b/collections/jobs
         mkdir -p repo-b/collections/jobs
 
-    - name: Passo 3 - Copiar os arquivos atualizados do repositório A para o repositório B
+    - name: Copiar os arquivos atualizados do repositório A para o repositório B
       run: |
         rsync -av collections/jobs/ repo-b/collections/jobs/
 
-    - name: Passo 4 - Configurar o Git para push
+    - name: Configurar o Git para push no repositório B
+      working-directory: repo-b
       run: |
-        cd repo-b
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
 
-    - name: Passo 5 - Commit e push das alterações
+    - name: Commit e push das alterações
+      working-directory: repo-b
       run: |
-        cd repo-b
         git add .
         git commit -m "Sync entire jobs folder from TESTE-A" || echo "Nenhuma mudança para commitar"
         git push https://x-access-token:${{ secrets.REPO_B_PAT }}@github.com/manoel-esx/TEST-B.git main
