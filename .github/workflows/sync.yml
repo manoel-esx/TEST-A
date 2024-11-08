@@ -21,41 +21,24 @@ jobs:
       run: |
         git clone https://x-access-token:${{ secrets.REPO_B_PAT }}@github.com/manoel-esx/TEST-B.git repo-b
 
-    - name: Passo 2 - Cria a pasta caso precisar
+    - name: Passo 2 - Excluir a pasta collections/jobs no repositório B
       run: |
+        rm -rf repo-b/collections/jobs
         mkdir -p repo-b/collections/jobs
-        
-    - name: Passo 3 - Copia os arquivos para o repositório B
+
+    - name: Passo 3 - Copiar os arquivos atualizados do repositório A para o repositório B
       run: |
-        rsync -av --delete collections/jobs/ repo-b/collections/jobs/
-        
-    - name: Passo 4 - Configuração do Git no diretório clonado
+        rsync -av collections/jobs/ repo-b/collections/jobs/
+
+    - name: Passo 4 - Configurar o Git para push
       run: |
         cd repo-b
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
-        
-    - name: Passo 5 - Guardar mudanças se houver e sincronizar
+
+    - name: Passo 5 - Commit e push das alterações
       run: |
         cd repo-b
-        if git diff --quiet; then
-          echo "No local changes to stash"
-        else
-          git stash
-          STASH_APPLIED=true
-        fi
-        git pull --rebase origin main
-        
-    - name: Passo 6 - Restaurar mudanças se necessário
-      run: |
-        cd repo-b
-        if [ "${STASH_APPLIED}" = true ]; then
-          git stash pop
-        fi
-    
-    - name: Passo 7 - Commit e push das alterações
-      run: |
-        cd repo-b
-        git add -A collections/jobs/*
-        git commit -m "Sync jobs folder from TESTE-A" || echo "Nenhuma mudança para commitar"
+        git add .
+        git commit -m "Sync entire jobs folder from TESTE-A" || echo "Nenhuma mudança para commitar"
         git push https://x-access-token:${{ secrets.REPO_B_PAT }}@github.com/manoel-esx/TEST-B.git main
