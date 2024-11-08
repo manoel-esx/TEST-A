@@ -31,14 +31,13 @@ jobs:
         rsync -av collections/jobs/ repo-b/collections/jobs/
 
     - name: Configurar o Git para push no repositório B
-      working-directory: repo-b
       run: |
+        cd repo-b
         git config --global user.name "GitHub Actions"
         git config --global user.email "actions@github.com"
 
     - name: Commit e push das alterações
-      working-directory: repo-b
       run: |
         git add .
         git commit -m "Sync entire jobs folder from TESTE-A" || echo "Nenhuma mudança para commitar"
-        git push https://x-access-token:${{ secrets.REPO_B_PAT }}@github.com/manoel-esx/TEST-B.git main
+        git push https://x-access-token:${{ secrets.REPO_B }}@github.com/manoel-esx/TEST-B.git main
