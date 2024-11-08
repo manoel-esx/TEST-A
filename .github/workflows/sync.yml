@@ -19,7 +19,7 @@ jobs:
 
     - name: Clonar o repositório B
       run: |
-        git clone https://x-access-token:${{ secrets.REPO_B_PAT }}@github.com/manoel-esx/TEST-B.git repo-b
+        git clone https://x-access-token:${{ secrets.REPO_B }}@github.com/manoel-esx/TEST-B.git repo-b
 
     - name: Excluir a pasta collections/jobs no repositório B
       run: |
