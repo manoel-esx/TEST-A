@@ -31,12 +31,21 @@ jobs:
         
     - name: Passo 4 - Configuração do Git
       run: |
+        
+        
+    - name: Passo 5 - Guardar mudanças se houver e sincronizar
+      run: |
+        
+        
+    - name: Passo 6 - Restaurar mudanças se necessário
+      run: |
+        
+    - name: Passo 7 - Commit e push das alterações
+      run: |
         cd repo-b
         git config user.name "GitHub Actions"
         git config user.email "actions@github.com"
         
-    - name: Passo 5 - Guardar mudanças se houver e sincronizar
-      run: |
         if git diff --quiet; then
           echo "No local changes to stash"
         else
@@ -45,14 +54,10 @@ jobs:
         fi
         git pull --rebase origin main
         
-    - name: Passo 6 - Restaurar mudanças se necessário
-      run: |
         if [ "${STASH_APPLIED}" = true ]; then
           git stash pop
         fi
-    
-    - name: Passo 7 - Commit e push das alterações
-      run: |
+
         git add -A collections/jobs/*
         git commit -m "Sync jobs folder from TESTE-A" || echo "Nenhuma mudança para commitar"
         git push origin main
