@@ -58,6 +58,6 @@ jobs:
           git stash pop
         fi
 
-        git add -A collections/jobs/*
+        git add -all collections/jobs/*
         git commit -m "Sync jobs folder from TESTE-A" || echo "Nenhuma mudança para commitar"
         git push origin main
