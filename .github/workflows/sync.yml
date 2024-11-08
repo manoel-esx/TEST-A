@@ -32,8 +32,8 @@ jobs:
     - name: Passo 4 - Configuração do Git
       run: |
         cd repo-b
-        git config user.name "GitHub Actions"
-        git config user.email "actions@github.com"
+        git config user.name "manoel-esx"
+        git config user.email "manoel.monteiro@esx.com.br"
         
     - name: Passo 5 - Guardar mudanças se houver e sincronizar
       run: |
