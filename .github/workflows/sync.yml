@@ -17,7 +17,7 @@ jobs:
       with:
         ref: main
 
-    - name: [Passo 1] - Clonar o repositório B
+    - name: Passo 1 - Clonar o repositório B
       run: |
         git clone https://x-access-token:${{ secrets.REPO_B_PAT }}@github.com/manoel-esx/TEST-B.git repo-b
 
